@@ -21,7 +21,7 @@ Think of it as a digital fingerprint vault 🔐 - proving the existence and owne
 
 ## 🛠️ How It Works
 
-1. **Hash your file off-chain** using SHA-256 (64 bytes output).  
+1. **Hash your file off-chain** using SHA-256 (32 bytes output).  
 2. **Call the smart contract** to register the hash on Optimism.  
 3. **Get a timestamped, on-chain proof** of your file’s existence.  
 4. **Verify any hash** by querying the contract anytime.  
@@ -31,9 +31,9 @@ Think of it as a digital fingerprint vault 🔐 - proving the existence and owne
 ## 📦 Contract Interface
 
 ```solidity
-function registerHash(bytes64 fileHash) external;
-function isRegistered(bytes64 fileHash) external view returns (bool);
-function getRegistration(bytes64 fileHash) external view returns (address registrant, uint256 timestamp);
+function registerHash(bytes32 fileHash) external;
+function isRegistered(bytes32 fileHash) external view returns (bool);
+function getRegistration(bytes32 fileHash) external view returns (address registrant, uint256 timestamp);
 ```
 
 ---

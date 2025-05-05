@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
+/**
+ * @title Decentralized Hash Registry
+ * @notice A contract for registering cryptographic hashes on-chain
+ * @dev Designed for timestamped proof of existence & hash verification
+ */
 contract DecentralizedHashRegistry {
     event HashRegistered(
         bytes32 indexed fileHash,
