@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+
 /**
  * @title Decentralized Hash Registry
  * @notice A contract for registering cryptographic hashes on-chain
  * @dev Designed for timestamped proof of existence & hash verification
  */
-contract DecentralizedHashRegistry {
+contract DecentralizedHashRegistry is ReentrancyGuard {
     event HashRegistered(
         bytes32 indexed fileHash,
         address indexed registrant,
@@ -20,7 +22,7 @@ contract DecentralizedHashRegistry {
 
     mapping(bytes32 => Registration) private registry;
 
-    function registerHash(bytes32 fileHash) external {
+    function registerHash(bytes32 fileHash) external nonReentrant {
         require(fileHash != bytes32(0), "Invalid hash");
         require(registry[fileHash].timestamp == 0, "Hash already registered");
 
