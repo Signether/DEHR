@@ -2,7 +2,7 @@
 
 ## 🔍 What is DEHR?
 
-DEHR (Decentralized Hash Registry) is a **smart contract** deployed on the **Optimism** network that allows you to **register SHA-512 hashes** of files in a decentralized, immutable, and transparent way.
+DEHR (Decentralized Hash Registry) is a **smart contract** deployed on the **Optimism** network that allows you to **register SHA-256 hashes** of files in a decentralized, immutable, and transparent way.
 
 Think of it as a digital fingerprint vault 🔐 - proving the existence and ownership of your files at a specific date.
 
@@ -10,7 +10,7 @@ Think of it as a digital fingerprint vault 🔐 - proving the existence and owne
 
 ## ✨ Features
 
-- ✅ Store SHA-512 file hashes on-chain  
+- ✅ Store SHA-256 file hashes on-chain  
 - ✅ Immutable and censorship-resistant registry  
 - ✅ Timestamped proof of registration  
 - ✅ Publicly verifiable by anyone  
@@ -21,7 +21,7 @@ Think of it as a digital fingerprint vault 🔐 - proving the existence and owne
 
 ## 🛠️ How It Works
 
-1. **Hash your file off-chain** using SHA-512 (64 bytes output).  
+1. **Hash your file off-chain** using SHA-256 (64 bytes output).  
 2. **Call the smart contract** to register the hash on Optimism.  
 3. **Get a timestamped, on-chain proof** of your file’s existence.  
 4. **Verify any hash** by querying the contract anytime.  
@@ -45,13 +45,13 @@ function getRegistration(bytes64 fileHash) external view returns (address regist
 - Bun  
 - [Hardhat](https://hardhat.org/) or your favorite Ethereum development environment  
 - MetaMask or another Optimism-compatible wallet  
-- SHA-512 hash generator (CLI or library)
+- SHA-256 hash generator (CLI or library)
 
 ### Register a File Hash
 
 ```bash
 # Example using ethers.js
-const fileHash = "0x..."; // 64 bytes SHA-512 hash hex string
+const fileHash = "0x..."; // 64 bytes SHA-256 hash hex string
 await dehrContract.registerHash(fileHash);
 ```
 
