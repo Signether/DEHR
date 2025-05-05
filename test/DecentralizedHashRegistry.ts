@@ -52,9 +52,13 @@ describe("DecentralizedHashRegistry", function () {
         it("Should return correct registration details", async function () {
             const { registry, owner, sampleHash } = await loadFixture(deployRegistryFixture);
 
-            const blockBefore = await ethers.provider.getBlock("latest");
             const tx = await registry.registerHash(sampleHash);
             const receipt = await tx.wait();
+
+            if (!receipt) {
+                throw new Error("Transaction failed");
+            }
+
             const blockAfter = await ethers.provider.getBlock(receipt.blockNumber);
             if (!blockAfter) {
                 throw new Error("Block information not available");
