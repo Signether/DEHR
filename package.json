@@ -1,5 +1,8 @@
 {
-  "name": "hardhat-project",
+  "name": "decentralized-hash-registry",
+  "scripts": {
+    "test": "hardhat coverage"
+  },
   "dependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "hardhat": "^2.23.0"
