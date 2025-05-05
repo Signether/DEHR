@@ -51,7 +51,7 @@ function getRegistration(bytes32 fileHash) external view returns (address regist
 
 ```bash
 # Example using ethers.js
-const fileHash = "0x..."; // 64 bytes SHA-256 hash hex string
+const fileHash = "0x..."; // 32 bytes SHA-256 hash hex string
 await dehrContract.registerHash(fileHash);
 ```
 
