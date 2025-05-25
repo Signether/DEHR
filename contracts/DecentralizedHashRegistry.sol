@@ -12,26 +12,71 @@ contract DecentralizedHashRegistry is ReentrancyGuard {
     event HashRegistered(
         bytes32 indexed fileHash,
         address indexed registrant,
+        string indexed registrantName,
+        uint256 timestamp
+    );
+
+    event RegistrantRegistered(
+        address indexed wallet,
+        string indexed registrantName,
         uint256 timestamp
     );
 
     struct Registration {
         address registrant;
+        string registrantName;
         uint256 timestamp;
     }
 
-    mapping(bytes32 => Registration) private registry;
+    struct Registrant {
+        string name;
+        uint256 registrationTimestamp;
+        bool isActive;
+    }
 
-    function registerHash(bytes32 fileHash) external nonReentrant {
+    mapping(bytes32 => Registration) private registry;
+    mapping(address => Registrant) private registrants;
+
+    modifier onlyRegisteredWallet() {
+        require(registrants[msg.sender].isActive, "Wallet not registered");
+        _;
+    }
+
+    function registerWallet(
+        string calldata registrantName
+    ) external nonReentrant {
+        require(bytes(registrantName).length > 0, "Invalid registrant name");
+        require(!registrants[msg.sender].isActive, "Wallet already registered");
+
+        registrants[msg.sender] = Registrant({
+            name: registrantName,
+            registrationTimestamp: block.timestamp,
+            isActive: true
+        });
+
+        emit RegistrantRegistered(msg.sender, registrantName, block.timestamp);
+    }
+
+    function registerHash(
+        bytes32 fileHash
+    ) external nonReentrant onlyRegisteredWallet {
         require(fileHash != bytes32(0), "Invalid hash");
         require(registry[fileHash].timestamp == 0, "Hash already registered");
 
+        string memory registrantName = registrants[msg.sender].name;
+
         registry[fileHash] = Registration({
             registrant: msg.sender,
+            registrantName: registrantName,
             timestamp: block.timestamp
         });
 
-        emit HashRegistered(fileHash, msg.sender, block.timestamp);
+        emit HashRegistered(
+            fileHash,
+            msg.sender,
+            registrantName,
+            block.timestamp
+        );
     }
 
     function isRegistered(
@@ -42,9 +87,37 @@ contract DecentralizedHashRegistry is ReentrancyGuard {
 
     function getRegistration(
         bytes32 fileHash
-    ) external view returns (address registrant, uint256 timestamp) {
+    )
+        external
+        view
+        returns (
+            address registrant,
+            string memory registrantName,
+            uint256 timestamp
+        )
+    {
         Registration memory reg = registry[fileHash];
         require(reg.timestamp != 0, "Hash not registered");
-        return (reg.registrant, reg.timestamp);
+        return (reg.registrant, reg.registrantName, reg.timestamp);
+    }
+
+    function getRegistrant(
+        address wallet
+    )
+        external
+        view
+        returns (
+            string memory name,
+            uint256 registrationTimestamp,
+            bool isActive
+        )
+    {
+        Registrant memory reg = registrants[wallet];
+        require(reg.isActive, "Registrant not found");
+        return (reg.name, reg.registrationTimestamp, reg.isActive);
+    }
+
+    function isWalletRegistered(address wallet) external view returns (bool) {
+        return registrants[wallet].isActive;
     }
 }
