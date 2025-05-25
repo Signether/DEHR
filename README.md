@@ -10,24 +10,24 @@ Think of it as a digital fingerprint vault 🔐 - proving the existence and owne
 
 ## ✨ Features
 
-- ✅ **Registrant wallet registration** - Users must register their wallets with a name before registering hashes  
-- ✅ Store SHA-256 file hashes on-chain with registrant attribution  
-- ✅ Immutable and censorship-resistant registry  
-- ✅ Timestamped proof of registration  
-- ✅ Publicly verifiable by anyone  
-- ✅ Lightweight and gas-efficient on Optimism L2  
-- ✅ Emits events for easy off-chain indexing  
-- ✅ Links registered hashes to verified registrant identities  
+- ✅ **Registrant wallet registration** - Users must register their wallets with a name before registering hashes
+- ✅ Store SHA-256 file hashes on-chain with registrant attribution
+- ✅ Immutable and censorship-resistant registry
+- ✅ Timestamped proof of registration
+- ✅ Publicly verifiable by anyone
+- ✅ Lightweight and gas-efficient on Optimism L2
+- ✅ Emits events for easy off-chain indexing
+- ✅ Links registered hashes to verified registrant identities
 
 ---
 
 ## 🛠️ How It Works
 
-1. **Register your wallet** with a unique registrant name first.  
-2. **Hash your file off-chain** using SHA-256 (32 bytes output).  
-3. **Call the smart contract** to register the hash on Optimism.  
-4. **Get a timestamped, on-chain proof** of your file's existence linked to your identity.  
-5. **Verify any hash** by querying the contract anytime to see who registered it and when.  
+1. **Register your wallet** with a unique registrant name first.
+2. **Hash your file off-chain** using SHA-256 (32 bytes output).
+3. **Call the smart contract** to register the hash on Optimism.
+4. **Get a timestamped, on-chain proof** of your file's existence linked to your identity.
+5. **Verify any hash** by querying the contract anytime to see who registered it and when.
 
 ---
 
