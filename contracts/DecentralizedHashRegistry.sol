@@ -13,6 +13,7 @@ contract DecentralizedHashRegistry is ReentrancyGuard {
         bytes32 indexed fileHash,
         address indexed registrant,
         string indexed registrantName,
+        string filename,
         uint256 timestamp
     );
 
@@ -25,6 +26,7 @@ contract DecentralizedHashRegistry is ReentrancyGuard {
     struct Registration {
         address registrant;
         string registrantName;
+        string filename;
         uint256 timestamp;
     }
 
@@ -36,6 +38,9 @@ contract DecentralizedHashRegistry is ReentrancyGuard {
 
     mapping(bytes32 => Registration) private registry;
     mapping(address => Registrant) private registrants;
+
+    bytes32[] private allHashes;
+    mapping(address => bytes32[]) private userHashes;
 
     modifier onlyRegisteredWallet() {
         require(registrants[msg.sender].isActive, "Wallet not registered");
@@ -58,9 +63,11 @@ contract DecentralizedHashRegistry is ReentrancyGuard {
     }
 
     function registerHash(
-        bytes32 fileHash
+        bytes32 fileHash,
+        string calldata filename
     ) external nonReentrant onlyRegisteredWallet {
         require(fileHash != bytes32(0), "Invalid hash");
+        require(bytes(filename).length > 0, "Invalid filename");
         require(registry[fileHash].timestamp == 0, "Hash already registered");
 
         string memory registrantName = registrants[msg.sender].name;
@@ -68,15 +75,43 @@ contract DecentralizedHashRegistry is ReentrancyGuard {
         registry[fileHash] = Registration({
             registrant: msg.sender,
             registrantName: registrantName,
+            filename: filename,
             timestamp: block.timestamp
         });
+
+        // Add to enumeration arrays
+        allHashes.push(fileHash);
+        userHashes[msg.sender].push(fileHash);
 
         emit HashRegistered(
             fileHash,
             msg.sender,
             registrantName,
+            filename,
             block.timestamp
         );
+    }
+
+    // New enumeration functions
+    function getAllHashesCount() external view returns (uint256) {
+        return allHashes.length;
+    }
+
+    function getHashByIndex(uint256 index) external view returns (bytes32) {
+        require(index < allHashes.length, "Index out of bounds");
+        return allHashes[index];
+    }
+
+    function getUserHashesCount(address user) external view returns (uint256) {
+        return userHashes[user].length;
+    }
+
+    function getUserHashByIndex(
+        address user,
+        uint256 index
+    ) external view returns (bytes32) {
+        require(index < userHashes[user].length, "Index out of bounds");
+        return userHashes[user][index];
     }
 
     function isRegistered(
@@ -93,12 +128,18 @@ contract DecentralizedHashRegistry is ReentrancyGuard {
         returns (
             address registrant,
             string memory registrantName,
+            string memory filename,
             uint256 timestamp
         )
     {
         Registration memory reg = registry[fileHash];
         require(reg.timestamp != 0, "Hash not registered");
-        return (reg.registrant, reg.registrantName, reg.timestamp);
+        return (
+            reg.registrant,
+            reg.registrantName,
+            reg.filename,
+            reg.timestamp
+        );
     }
 
     function getRegistrant(
