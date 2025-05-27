@@ -132,7 +132,7 @@ bun run deploy --network optimism
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome!  
-Feel free to check [issues page](https://github.com/Signather/DEHR/issues).
+Feel free to check [issues page](https://github.com/Signether/DEHR/issues).
 
 ---
 
